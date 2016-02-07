@@ -43,7 +43,7 @@ $dataNew = json_encode($data2, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 $d = new NewDiff();
 
-$old = file_get_contents('files/old');
+$old = ''; //file_get_contents('files/old');
 $new = file_get_contents('files/new');
 
 $ts = microtime_float();
@@ -54,7 +54,5 @@ $tf2 = microtime_float();
 
 echo 'diff = '.($tf1-$ts).' sec'.'<br/>';
 echo 'patch = '.($tf2-$tf1).' sec'.'<br/>';
-echo '<br/>';
-echo $dataOld;
 echo '<br/>';
 echo $result;

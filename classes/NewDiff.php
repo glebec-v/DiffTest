@@ -9,6 +9,7 @@ class NewDiff
     const OP_MINUS = '-';
     const OP_PLUS = '+';
     const CONTEXT = ' ';
+    const OP_ADD_ALL = '~';
 
     public function __construct()
     {
@@ -22,6 +23,9 @@ class NewDiff
 
     public function patch($src, $patch)
     {
+        if (empty($patch)) {
+            return $src;
+        }
         $src = preg_replace("/(\\r\\n|\\n)/", PHP_EOL, $src);
         $patches = explode("\n", $patch);
         $previous = '';
@@ -31,14 +35,19 @@ class NewDiff
                 continue;
             }
             $clearedLine = mb_substr($line, 1, iconv_strlen($line) - 1);
-            switch (mb_substr($line, 0, 1)) {
+            if (empty($clearedLine)) {
+                continue;
+            }
+            $mode = !empty($src) ? mb_substr($line, 0, 1) : self::OP_ADD_ALL;
+            switch ($mode) {
                 case self::OP_MINUS:
                     // check if $line is the last in $src
                     if (mb_strpos($src, $clearedLine) + iconv_strlen($clearedLine) === iconv_strlen($src)) {
-                        $src = str_replace(PHP_EOL . $clearedLine, '', $src);
+                        $src = rtrim(str_replace($clearedLine, '', $src));
                     }
                     $src = str_replace($clearedLine . PHP_EOL, '', $src);
                     break;
+                case self::OP_ADD_ALL:
                 case self::OP_PLUS:
                     if (empty($previous)) {
                         $src = $clearedLine . PHP_EOL . $src;
@@ -56,7 +65,7 @@ class NewDiff
             foreach ($insert as $strAfter => $insertion) {
                 $offset = mb_strpos($src, $strAfter) + iconv_strlen($strAfter) +1;
                 $left = rtrim(mb_substr($src, 0, $offset)) . PHP_EOL;
-                $right = mb_substr($src, $offset + 1, iconv_strlen($src) - $offset);
+                $right = rtrim(mb_substr($src, $offset + 1, iconv_strlen($src) - $offset));
                 if (empty($right)) {
                     $insertion = rtrim($insertion);
                 }
