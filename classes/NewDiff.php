@@ -33,9 +33,9 @@ class NewDiff
             $clearedLine = mb_substr($line, 1, iconv_strlen($line) - 1);
             switch (mb_substr($line, 0, 1)) {
                 case self::OP_MINUS:
-                    // check if $line is the first in $src
+                    // check if $line is the last in $src
                     if (mb_strpos($src, $clearedLine) + iconv_strlen($clearedLine) === iconv_strlen($src)) {
-                        $src = str_replace($clearedLine, '', $src);
+                        $src = str_replace(PHP_EOL . $clearedLine, '', $src);
                     }
                     $src = str_replace($clearedLine . PHP_EOL, '', $src);
                     break;
@@ -57,6 +57,9 @@ class NewDiff
                 $offset = mb_strpos($src, $strAfter) + iconv_strlen($strAfter) +1;
                 $left = rtrim(mb_substr($src, 0, $offset)) . PHP_EOL;
                 $right = mb_substr($src, $offset + 1, iconv_strlen($src) - $offset);
+                if (empty($right)) {
+                    $insertion = rtrim($insertion);
+                }
                 $src = $left . $insertion . $right;
             }
         }

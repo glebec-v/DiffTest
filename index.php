@@ -47,9 +47,9 @@ $old = file_get_contents('files/old');
 $new = file_get_contents('files/new');
 
 $ts = microtime_float();
-$dif = $d->makeDiff($dataOld, $dataNew);
+$dif = $d->makeDiff($old, $new, true);
 $tf1 = microtime_float();
-$result = $d->patch($dataOld, $dif);
+$result = $d->patch($new, $dif);
 $tf2 = microtime_float();
 
 echo 'diff = '.($tf1-$ts).' sec'.'<br/>';

@@ -12,12 +12,20 @@ class NewDiffTest extends PHPUnit_Framework_TestCase
         $this->df = new NewDiff();
     }
 
-    public function testPatch()
+    public function testPatchSimpleTextForward()
     {
         $old = file_get_contents('files/old');
         $new = file_get_contents('files/new');
         $diff = $this->df->makeDiff($old, $new);
         $this->assertEquals($new, $this->df->patch($old, $diff));
+    }
+
+    public function testPatchSimpleTextBack()
+    {
+        $old = file_get_contents('files/old');
+        $new = file_get_contents('files/new');
+        $diff = $this->df->makeDiff($old, $new, true);
+        $this->assertEquals($old, $this->df->patch($new, $diff));
     }
 
 }
