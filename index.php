@@ -6,7 +6,6 @@ function microtime_float()
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
-
 $data1 = [
     "фрукты"  => [
         "a" => "апельсин",
@@ -47,9 +46,9 @@ $old = ''; //file_get_contents('files/old');
 $new = file_get_contents('files/new');
 
 $ts = microtime_float();
-$dif = $d->makeDiff($old, $new, true);
+$dif = $d->makeDiff($dataOld, $dataNew);
 $tf1 = microtime_float();
-$result = $d->patch($new, $dif);
+$result = $d->patch($dataOld, $dif);
 $tf2 = microtime_float();
 
 echo 'diff = '.($tf1-$ts).' sec'.'<br/>';
