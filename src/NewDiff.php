@@ -1,5 +1,9 @@
 <?php
 
+namespace GlebecV;
+
+use SebastianBergmann\Diff\Differ;
+
 class NewDiff
 {
     protected $differ;
@@ -13,14 +17,27 @@ class NewDiff
 
     public function __construct()
     {
-        $this->differ = new \SebastianBergmann\Diff\Differ('', true);
+        $this->differ = new Differ();
     }
 
-    public function makeDiff($src, $dst, $reversed = false)
+    /**
+     * @param array|string $src
+     * @param array|string $dst
+     * @param bool         $reversed
+     *
+     * @return string
+     */
+    public function makeDiff($src, $dst, $reversed = false): string
     {
         return $reversed ? $this->differ->diff($dst, $src) : $this->differ->diff($src, $dst);
     }
 
+    /**
+     * @param string $src
+     * @param string $patch
+     *
+     * @return mixed|null|string|string[]
+     */
     public function patch($src, $patch)
     {
         if (empty($patch)) {
@@ -30,6 +47,7 @@ class NewDiff
         $patches = explode("\n", $patch);
         $previous = '';
         $insert = [];
+
         foreach ($patches as $line) {
             if (0 == strcmp(self::START_AREA, $line)) {
                 continue;

@@ -1,14 +1,24 @@
 {
+  "name": "glebec-v/DiffTest",
+  "description": "simple patcher for Sebastians differ",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gleb Vorotilov",
+      "email": "gvorotilov@gmail.com"
+    }
+  ],
   "require": {
-    "sebastian/diff": "*"
+    "sebastian/diff": "~2.0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.2.*"
+    "phpunit/phpunit": "~6.3.0"
   },
   "autoload": {
-    "classmap": [
-      "vendor/sebastian/diff/src/",
-      "classes/"
-    ]
+    "psr-4": {"GlebecV\\": "src"}
+  },
+  "autoload-dev": {
+    "psr-4": { "": "tests/" }
   }
 }

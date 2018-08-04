@@ -1,11 +1,14 @@
 <?php
+
 require __DIR__.'/vendor/autoload.php';
 error_reporting(E_ALL);
+
 function microtime_float()
 {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
 }
+
 $data1 = [
     "фрукты"  => [
         "a" => "апельсин",
@@ -19,7 +22,9 @@ $data1 = [
         "первая",
         5 => "вторая",
         "третья"
-    ]];
+    ]
+];
+
 $data2 = [
     "овощи"  => [
         "a" => "картошка",
@@ -33,14 +38,15 @@ $data2 = [
         "первая",
         4 => "вторая",
         'третья' => 'бублик'
-    ]];
+    ]
+];
 
 $dataOld = json_encode($data1, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 $dataNew = json_encode($data2, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 // ----------------------
 
-$d = new NewDiff();
+$d = new GlebecV\NewDiff();
 
 $old = ''; //file_get_contents('files/old');
 $new = file_get_contents('files/new');
@@ -51,7 +57,7 @@ $tf1 = microtime_float();
 $result = $d->patch($dataOld, $dif);
 $tf2 = microtime_float();
 
-echo 'diff = '.($tf1-$ts).' sec'.'<br/>';
-echo 'patch = '.($tf2-$tf1).' sec'.'<br/>';
-echo '<br/>';
+echo 'diff = '.($tf1-$ts).' sec'.PHP_EOL;
+echo 'patch = '.($tf2-$tf1).' sec'.PHP_EOL;
+echo PHP_EOL;
 echo $result;

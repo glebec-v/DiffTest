@@ -1,6 +1,10 @@
 <?php
 
-class NewDiffTest extends PHPUnit_Framework_TestCase
+include __DIR__.'../vendor/autoload.php';
+
+use GlebecV\NewDiff;
+
+class NewDiffTest extends PHPUnit\Framework\TestCase
 {
     /**
      * @var NewDiff df
